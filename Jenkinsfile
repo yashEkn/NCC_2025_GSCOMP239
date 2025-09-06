@@ -19,7 +19,7 @@ pipeline {
     stage('Build Docker image') {
       steps {
         script {
-          sh "docker build -t ${DOCKERHUB_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG} ./backend"
+          sh "docker build -t yashte/gscomp239:latest ./backend"
         }
       }
     }
