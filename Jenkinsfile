@@ -19,7 +19,8 @@ pipeline {
             steps {
                 script {
                     // Build backend image from ./backend folder
-                    sh "docker build -t ${DOCKERHUB_NAMESPACE}/backend-app:${IMAGE_TAG} ./backend"
+                    //sh "docker build -t ${DOCKERHUB_NAMESPACE}/backend-app:${IMAGE_TAG} ./backend"
+                    sh "docker build -t ${DOCKERHUB_NAMESPACE}/backend-app:${BUILD_NUMBER} ./backend"
                 }
             }
         }
@@ -28,7 +29,8 @@ pipeline {
             steps {
                 script {
                     // Build frontend image from ./frontend folder
-                    sh "docker build -t ${DOCKERHUB_NAMESPACE}/frontend-app:${IMAGE_TAG} ./frontend"
+                    //sh "docker build -t ${DOCKERHUB_NAMESPACE}/frontend-app:${IMAGE_TAG} ./frontend"
+                    sh "docker build -t ${DOCKERHUB_NAMESPACE}/frontend-app:${BUILD_NUMBER} ./frontend"
                 }
             }
         }
