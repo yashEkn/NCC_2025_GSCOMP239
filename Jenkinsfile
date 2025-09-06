@@ -19,7 +19,7 @@ pipeline {
       steps {
         script {
           // Build backend image
-          sh "docker build -t ${DOCKERHUB_NAMESPACE}/backend-app:${IMAGE_TAG} ./backend"
+          sh "docker build -t yashte/backend-app:latest ./backend"
         }
       }
     }
@@ -28,7 +28,7 @@ pipeline {
       steps {
         script {
           // Build frontend image
-          sh "docker build -t ${DOCKERHUB_NAMESPACE}/frontend-app:${IMAGE_TAG} ./frontend"
+          sh "docker build -t yashte/frontend-app:latest ./frontend"
         }
       }
     }
