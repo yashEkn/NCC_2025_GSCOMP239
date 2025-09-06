@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKERHUB_NAMESPACE = "yashte"
-        IMAGE_TAG = "latest"  // you can change to ${BUILD_NUMBER} for unique tags
+        IMAGE_TAG = "${BUILD_NUMBER}"  // unique tag for each Jenkins build
     }
 
     stages {
@@ -24,14 +24,14 @@ pipeline {
             }
         }
 
-        //stage('Build Frontend Docker image') {
-            //steps {
-                //script {
+        stage('Build Frontend Docker image') {
+            steps {
+                script {
                     // Build frontend image from ./frontend folder
-                    //sh "docker build -t ${DOCKERHUB_NAMESPACE}/frontend-app:${IMAGE_TAG} ./frontend"
-                //}
-            //}
-        //}
+                    sh "docker build -t ${DOCKERHUB_NAMESPACE}/frontend-app:${IMAGE_TAG} ./frontend"
+                }
+            }
+        }
 
         stage('Push Docker images to Docker Hub') {
             steps {
@@ -39,7 +39,7 @@ pipeline {
                     // Login to Docker Hub
                     sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
 
-                    // Push images
+                    // Push images with BUILD_NUMBER as tag
                     sh "docker push ${DOCKERHUB_NAMESPACE}/backend-app:${IMAGE_TAG}"
                     sh "docker push ${DOCKERHUB_NAMESPACE}/frontend-app:${IMAGE_TAG}"
 
