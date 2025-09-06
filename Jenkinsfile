@@ -2,9 +2,8 @@ pipeline {
   agent any
 
   environment {
-    DOCKERHUB_NAMESPACE = "yashte" 
-    IMAGE_TAG = "latest"  // or use "${BUILD_NUMBER}" for unique tags
-    IMAGE_NAME = "gscomp239"
+    DOCKERHUB_NAMESPACE = "yashte"
+    IMAGE_TAG = "latest"  // or use BUILD_NUMBER for unique tags
   }
 
   stages {
@@ -16,19 +15,30 @@ pipeline {
       }
     }
 
-    stage('Build Docker image') {
+    stage('Build Backend Docker image') {
       steps {
         script {
-          sh "docker build -t yashte/gscomp239:latest ./backend"
+          // Build backend image
+          sh "docker build -t ${DOCKERHUB_NAMESPACE}/backend-app:${IMAGE_TAG} ./backend"
         }
       }
     }
 
-    stage('Push to Docker Hub') {
+    stage('Build Frontend Docker image') {
+      steps {
+        script {
+          // Build frontend image
+          sh "docker build -t ${DOCKERHUB_NAMESPACE}/frontend-app:${IMAGE_TAG} ./frontend"
+        }
+      }
+    }
+
+    stage('Push Docker images to Docker Hub') {
       steps {
         withCredentials([usernamePassword(credentialsId: 'docker-hub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
           sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
-          sh "docker push ${DOCKERHUB_NAMESPACE}/${IMAGE_NAME}:${IMAGE_TAG}"
+          sh "docker push ${DOCKERHUB_NAMESPACE}/backend-app:${IMAGE_TAG}"
+          sh "docker push ${DOCKERHUB_NAMESPACE}/frontend-app:${IMAGE_TAG}"
           sh 'docker logout'
         }
       }
