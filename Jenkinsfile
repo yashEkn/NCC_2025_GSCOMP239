@@ -24,14 +24,14 @@ pipeline {
             }
         }
 
-        stage('Build Frontend Docker image') {
-            steps {
-                script {
+        //stage('Build Frontend Docker image') {
+            //steps {
+                //script {
                     // Build frontend image from ./frontend folder
-                    sh "docker build -t ${DOCKERHUB_NAMESPACE}/frontend-app:${IMAGE_TAG} ./frontend"
-                }
-            }
-        }
+                    //sh "docker build -t ${DOCKERHUB_NAMESPACE}/frontend-app:${IMAGE_TAG} ./frontend"
+                //}
+            //}
+        //}
 
         stage('Push Docker images to Docker Hub') {
             steps {
